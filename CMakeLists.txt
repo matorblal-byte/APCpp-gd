@@ -29,7 +29,7 @@ if (NOT MINGW)
 endif (NOT MINGW)
 
 if ((WIN32 AND USE_TLS) OR USE_MBED_TLS)
-    set(APCPP_MBEDTLS_VER 3.6.4)
+    set(APCPP_MBEDTLS_VER 3.6.1)
     CPMAddPackage("gh:Mbed-TLS/mbedtls@3.6.1")
     target_link_libraries(${PROJECT_NAME} MbedTLS::mbedtls)
     target_include_directories(${PROJECT_NAME} PUBLIC ${mbedtls_SOURCE_DIR}/include)
