@@ -26,7 +26,7 @@ if (NOT MINGW)
 endif (NOT MINGW)
 
 if ((WIN32 AND USE_TLS) OR USE_MBED_TLS)
-    set(APCPP_MBEDTLS_VER 3.6.4)
+    set(APCPP_MBEDTLS_VER 3.4.0)
     CPMAddPackage("gh:Mbed-TLS/mbedtls@${APCPP_MBEDTLS_VER}")
     target_link_libraries(${PROJECT_NAME} mbedtls)
     set(USE_STATIC_MBEDTLS_LIBRARY ON CACHE BOOL "" FORCE)
