@@ -4,13 +4,10 @@ project(APCpp)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(USE_MBED_TLS ON)
-set(CMAKE_C_SIMULATE_ID "Clang")
-
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-add_library(APCpp STATIC Archipelago.cpp Archipelago_DataStorageSim.cpp Archipelago_Gifting.cpp)
+add_library(APCpp SHARED Archipelago.cpp Archipelago_DataStorageSim.cpp Archipelago_Gifting.cpp)
 set_target_properties(APCpp PROPERTIES PUBLIC_HEADER Archipelago.h)
 
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
@@ -30,9 +27,18 @@ endif (NOT MINGW)
 
 if ((WIN32 AND USE_TLS) OR USE_MBED_TLS)
     set(APCPP_MBEDTLS_VER 3.6.4)
-    CPMAddPackage("gh:Mbed-TLS/mbedtls@3.6.4")
-    target_link_libraries(${PROJECT_NAME} MbedTLS::mbedtls)
-    target_include_directories(${PROJECT_NAME} PUBLIC ${mbedtls_SOURCE_DIR}/include)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E remove -f mbedtls-${APCPP_MBEDTLS_VER})
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_CURRENT_SOURCE_DIR}/mbedtls-${APCPP_MBEDTLS_VER}.tar.bz2
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+    set(USE_STATIC_MBEDTLS_LIBRARY ON CACHE BOOL "" FORCE)
+    set(MBEDTLS_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/mbedtls-${APCPP_MBEDTLS_VER}/include)
+    set(MBEDTLS_VERSION_GREATER_THAN_3 ${MBEDTLS_INCLUDE_DIRS})
+    set(MBEDTLS_LIBRARY mbedtls)
+    set(MBEDX509_LIBRARY mbedx509)
+    set(MBEDCRYPTO_LIBRARY mbedcrypto)
+    add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/mbedtls-${APCPP_MBEDTLS_VER} mbedtls_bin)
 endif ((WIN32 AND USE_TLS) OR USE_MBED_TLS)
 
 # Attempt finding system version of zlib
