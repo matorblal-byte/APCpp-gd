@@ -27,18 +27,15 @@ endif (NOT MINGW)
 
 if ((WIN32 AND USE_TLS) OR USE_MBED_TLS)
     set(APCPP_MBEDTLS_VER 3.6.4)
-    execute_process(COMMAND ${CMAKE_COMMAND} -E remove -f mbedtls-${APCPP_MBEDTLS_VER})
-    execute_process(
-      COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_CURRENT_SOURCE_DIR}/mbedtls-${APCPP_MBEDTLS_VER}.tar.bz2
-      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    )
+    CPMAddPackage("gh:Mbed-TLS/mbedtls@${APCPP_MBEDTLS_VER}")
+    target_link_libraries(${PROJECT_NAME} mbedtls)
     set(USE_STATIC_MBEDTLS_LIBRARY ON CACHE BOOL "" FORCE)
-    set(MBEDTLS_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/mbedtls-${APCPP_MBEDTLS_VER}/include)
+    set(MBEDTLS_INCLUDE_DIRS ${mbedtls_SOURCE_DIR}/mbedtls-${APCPP_MBEDTLS_VER}/include)
     set(MBEDTLS_VERSION_GREATER_THAN_3 ${MBEDTLS_INCLUDE_DIRS})
     set(MBEDTLS_LIBRARY mbedtls)
     set(MBEDX509_LIBRARY mbedx509)
     set(MBEDCRYPTO_LIBRARY mbedcrypto)
-    add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/mbedtls-${APCPP_MBEDTLS_VER} mbedtls_bin)
+    target_include_directories(${PROJECT_NAME} PUBLIC ${mbedtls_SOURCE_DIR}/include)
 endif ((WIN32 AND USE_TLS) OR USE_MBED_TLS)
 
 # Attempt finding system version of zlib
