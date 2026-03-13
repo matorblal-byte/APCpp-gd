@@ -100,7 +100,6 @@ std::queue<std::pair<Json::Value,AP_RequestStatus*>> queue_server_data;
 std::map<std::string, std::function<void(int)>> map_slotdata_callback_int;
 std::map<std::string, std::function<void(std::string)>> map_slotdata_callback_raw;
 std::map<std::string, std::function<void(std::map<int,int>)>> map_slotdata_callback_mapintint;
-std::map<std::string, std::function<void(std::vector<int64_t>)>> map_slotdata_callback_intlist;
 // Datapackage Stuff
 std::string const datapkg_cache_path = "APCpp_datapkg.cache";
 Json::Value datapkg_cache;
@@ -455,10 +454,6 @@ void AP_RegisterSlotDataMapIntIntCallback(std::string key, std::function<void(st
     map_slotdata_callback_mapintint[key] = f_slotdata;
 }
 
-void APRegisterSlotDataIntListCallback(std::string key, std::function<void(std::vector<int64_t>)> f_slotdata) {
-    map_slotdata_callback_intlist[key] = f_slotdata;
-}
-
 void AP_SetDeathLinkSupported(bool supdeathlink) {
     deathlinksupported = supdeathlink;
 }
@@ -800,23 +795,6 @@ bool parse_response(std::string msg, std::string &request) {
                         out[std::stoi(itr)] = root[i]["slot_data"][key][itr.c_str()].asInt();
                     }
                     map_slotdata_callback_mapintint[key](out);
-                } else if (map_slotdata_callback_intlist.count(key)) {
-                    for (Json::Value::const_iterator it = root[i]["slot_data"].begin(); it != root[i]["slot_data"].end(); ++it) {
-                        std::string key = it.name();
-                        if (map_slotdata_callback_intlist.count(key)) {
-                            if (root[i]["slot_data"][key].isArray()) {
-                                std::vector<int64_t> out;
-                                for (const auto& val : root[i]["slot_data"][key]) {
-                                    out.push_back(val.asInt64());
-                                }
-                                map_slotdata_callback_intlist[key](out);
-                                continue;
-                            }
-                        }
-                    }
-                        if (map_slotdata_callback_int.count(key)) {
-                            map_slotdata_callback_int[key](root[i]["slot_data"][key].asInt());
-                        }
                 } else {
                     printf("AP: Warning: Unmapped slot data with key \"%s\"!\n", key.c_str());
                 }
