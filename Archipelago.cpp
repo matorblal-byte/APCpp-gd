@@ -455,7 +455,7 @@ void AP_RegisterSlotDataMapIntIntCallback(std::string key, std::function<void(st
     map_slotdata_callback_mapintint[key] = f_slotdata;
 }
 
-void APRegiterSlotDataIntListCallback(std::string key, std::function<void(std::vector<int>)> f_slotdata) {
+void APRegisterSlotDataIntListCallback(std::string key, std::function<void(std::vector<int>)> f_slotdata) {
     map_slotdata_callback_intlist[key] = f_slotdata;
 }
 
