@@ -67,7 +67,7 @@ void AP_SetDeathLinkRecvCallback(std::function<void(std::string, std::string)> f
 
 // Parameter Function receives Slotdata of respective type
 void AP_RegisterSlotDataIntCallback(std::string, std::function<void(int)> f_slotdata);
-void AP_RegisterSlotDataMapIntIntCallback(std::string, std::function<void(std::map<int64_t,int64_t>)> f_slotdata);
+void AP_RegisterSlotDataMapIntIntCallback(std::string, std::function<void(std::map<int,int>)> f_slotdata);
 void AP_RegisterSlotDataRawCallback(std::string, std::function<void(std::string)> f_slotdata);
 
 // Send LocationScouts packet
