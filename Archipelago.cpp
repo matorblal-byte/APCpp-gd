@@ -808,11 +808,10 @@ bool parse_response(std::string msg, std::string &request) {
                             }
                             map_slotdata_callback_intlist[key](out);
                         }
-                else {
+                } else {
                     printf("AP: Warning: Unmapped slot data with key \"%s\"!\n", key.c_str());
                 }
             }
-        }
 
             resync_serverdata_request.key = "APCppLastRecv" + ap_player_name + std::to_string(ap_player_id);
             resync_serverdata_request.value = &last_item_idx;
