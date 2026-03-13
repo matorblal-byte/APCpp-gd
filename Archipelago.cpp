@@ -99,7 +99,7 @@ std::queue<std::pair<Json::Value,AP_RequestStatus*>> queue_server_data;
 //Slot Data Stuff
 std::map<std::string, std::function<void(int)>> map_slotdata_callback_int;
 std::map<std::string, std::function<void(std::string)>> map_slotdata_callback_raw;
-std::map<std::string, std::function<void(std::map<int,int>)>> map_slotdata_callback_mapintint;
+std::map<std::string, std::function<void(std::map<int64_t,int64_t>)>> map_slotdata_callback_mapintint;
 
 // Datapackage Stuff
 std::string const datapkg_cache_path = "APCpp_datapkg.cache";
@@ -451,7 +451,7 @@ void AP_RegisterSlotDataRawCallback(std::string key, std::function<void(std::str
     map_slotdata_callback_raw[key] = f_slotdata;
 }
 
-void AP_RegisterSlotDataMapIntIntCallback(std::string key, std::function<void(std::map<int,int>)> f_slotdata) {
+void AP_RegisterSlotDataMapIntIntCallback(std::string key, std::function<void(std::map<int64_t,int64_t>)> f_slotdata) {
     map_slotdata_callback_mapintint[key] = f_slotdata;
 }
 
