@@ -69,7 +69,6 @@ void AP_SetDeathLinkRecvCallback(std::function<void(std::string, std::string)> f
 void AP_RegisterSlotDataIntCallback(std::string, std::function<void(int)> f_slotdata);
 void AP_RegisterSlotDataMapIntIntCallback(std::string, std::function<void(std::map<int,int>)> f_slotdata);
 void AP_RegisterSlotDataRawCallback(std::string, std::function<void(std::string)> f_slotdata);
-void APRegisterSlotDataIntListCallback(std::string key, std::function<void(std::vector<int64_t>)> f_slotdata);
 // Send LocationScouts packet
 void AP_SendLocationScouts(std::set<int64_t> const& locations, int create_as_hint);
 // Receive Function for LocationInfo
