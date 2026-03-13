@@ -100,7 +100,7 @@ std::queue<std::pair<Json::Value,AP_RequestStatus*>> queue_server_data;
 std::map<std::string, std::function<void(int)>> map_slotdata_callback_int;
 std::map<std::string, std::function<void(std::string)>> map_slotdata_callback_raw;
 std::map<std::string, std::function<void(std::map<int,int>)>> map_slotdata_callback_mapintint;
-std::map<std::string, std::function<void<std::vector<int>)>> map_slotdata_callback_intlist;
+std::map<std::string, std::function<void(std::vector<int>)>> map_slotdata_callback_intlist;
 // Datapackage Stuff
 std::string const datapkg_cache_path = "APCpp_datapkg.cache";
 Json::Value datapkg_cache;
