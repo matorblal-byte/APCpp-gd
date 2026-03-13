@@ -801,23 +801,25 @@ bool parse_response(std::string msg, std::string &request) {
                     }
                     map_slotdata_callback_mapintint[key](out);
                 } else if (map_slotdata_callback_intlist.count(key)) {
-                    const Json::Value& slot_val = root[i]["slot_data"][key];
-                    if (slot_val.isArray()) {
-                        std::vector<int64_t> out;
-                        out.reserve(slot_val.size());
-                
-                        for (const auto& element : slot_val) {
-                            if (!element.isNull()) {
-                                out.push_back(element.asInt64());
+                    for (Json::Value::const_iterator it = root[i]["slot_data"].begin(); it != root[i]["slot_data"].end(); ++it) {
+                        std::string key = it.name();
+                        if (map_slotdata_callback_intlist.count(key)) {
+                            if (root[i]["slot_data"][key].isArray()) {
+                                std::vector<int64_t> out;
+                                for (const auto& val : root[i]["slot_data"][key]) {
+                                    out.push_back(val.asInt64());
+                                }
+                                map_slotdata_callback_intlist[key](out);
+                                continue;
                             }
                         }
-                        map_slotdata_callback_intlist[key](out);
-                    }
+                        if (map_slotdata_callback_int.count(key)) {
+                            map_slotdata_callback_int[key](root[i]["slot_data"][key].asInt());
+                        }
                 } else {
                     printf("AP: Warning: Unmapped slot data with key \"%s\"!\n", key.c_str());
                 }
             }
-
             resync_serverdata_request.key = "APCppLastRecv" + ap_player_name + std::to_string(ap_player_id);
             resync_serverdata_request.value = &last_item_idx;
             resync_serverdata_request.type = AP_DataType::Int;
