@@ -813,6 +813,7 @@ bool parse_response(std::string msg, std::string &request) {
                                 continue;
                             }
                         }
+                    }
                         if (map_slotdata_callback_int.count(key)) {
                             map_slotdata_callback_int[key](root[i]["slot_data"][key].asInt());
                         }
