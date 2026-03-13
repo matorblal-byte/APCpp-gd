@@ -100,7 +100,7 @@ std::queue<std::pair<Json::Value,AP_RequestStatus*>> queue_server_data;
 std::map<std::string, std::function<void(int)>> map_slotdata_callback_int;
 std::map<std::string, std::function<void(std::string)>> map_slotdata_callback_raw;
 std::map<std::string, std::function<void(std::map<int,int>)>> map_slotdata_callback_mapintint;
-std::map<std::string, std::function<void(std::vector<int>)>> map_slotdata_callback_intlist;
+std::map<std::string, std::function<void(std::vector<int64_t>)>> map_slotdata_callback_intlist;
 // Datapackage Stuff
 std::string const datapkg_cache_path = "APCpp_datapkg.cache";
 Json::Value datapkg_cache;
@@ -455,7 +455,7 @@ void AP_RegisterSlotDataMapIntIntCallback(std::string key, std::function<void(st
     map_slotdata_callback_mapintint[key] = f_slotdata;
 }
 
-void APRegisterSlotDataIntListCallback(std::string key, std::function<void(std::vector<int>)> f_slotdata) {
+void APRegisterSlotDataIntListCallback(std::string key, std::function<void(std::vector<int64_t>)> f_slotdata) {
     map_slotdata_callback_intlist[key] = f_slotdata;
 }
 
@@ -804,7 +804,7 @@ bool parse_response(std::string msg, std::string &request) {
                     std::vector<int> out;
                         if (root[i]["slot_data"][key].isArray()) {
                             for (Json::Value& val : root[i]["slot_data"][key]) {
-                                out.push_back(val.asInt());
+                                out.push_back(val.asInt64());
                             }
                             map_slotdata_callback_intlist[key](out);
                         }
