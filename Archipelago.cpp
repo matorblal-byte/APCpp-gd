@@ -3,7 +3,7 @@
 #include "ixwebsocket/IXNetSystem.h"
 #include "ixwebsocket/IXWebSocket.h"
 #include "ixwebsocket/IXUserAgent.h"
-
+#include <../Geode/utils/Log.hpp>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
