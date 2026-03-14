@@ -782,8 +782,7 @@ bool parse_response(std::string msg, std::string &request) {
             else if (root[i]["slot_data"]["DeathLink_Amnesty"] != Json::nullValue)
                 deathlink_amnesty = root[i]["slot_data"].get("DeathLink_Amnesty", 0).asInt();
             cur_deathlink_amnesty = deathlink_amnesty;
-            for (Json::Value key_j : root[i]["slot_data"]) {
-                std::string key = key_j.asString();
+            for (const std::string& key : root[i]["slot_data"].getMemberNames()) {
                 if (map_slotdata_callback_int.count(key)) {
                     map_slotdata_callback_int[key](root[i]["slot_data"][key].asInt());
                 } else if (map_slotdata_callback_raw.count(key)) {
