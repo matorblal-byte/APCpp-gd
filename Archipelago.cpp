@@ -448,6 +448,7 @@ void AP_RegisterSlotDataIntCallback(std::string key, std::function<void(int)> f_
 
 void AP_RegisterSlotDataRawCallback(std::string key, std::function<void(std::string)> f_slotdata) {
     map_slotdata_callback_raw[key] = f_slotdata;
+    geode::log::info(f_slotdata);
 }
 
 void AP_RegisterSlotDataMapIntIntCallback(std::string key, std::function<void(std::map<int,int>)> f_slotdata) {
@@ -788,7 +789,9 @@ bool parse_response(std::string msg, std::string &request) {
                 if (map_slotdata_callback_int.count(key)) {
                     map_slotdata_callback_int[key](root[i]["slot_data"][key].asInt());
                 } else if (map_slotdata_callback_raw.count(key)) {
+                    geode::log::info("yo im about to send that thing u said to")
                     map_slotdata_callback_raw[key](writer.write(root[i]["slot_data"][key]));
+                    geode::log::info("hey i sent it")
                 } else if (map_slotdata_callback_mapintint.count(key)) {
                     std::map<int,int> out;
                     for (auto itr : root[i]["slot_data"][key].getMemberNames()) {
