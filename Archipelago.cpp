@@ -769,7 +769,7 @@ bool parse_response(std::string msg, std::string &request) {
                 }
             }
             catch (const std::exception& e) {
-                printf("AP Exception: {}\n", e);
+                printf("AP Exception: {}\n", e.what());
             }
             try {
                 if (root[i].isMember("players")) {
@@ -788,7 +788,7 @@ bool parse_response(std::string msg, std::string &request) {
                 }
             }
             catch (const std::exception& e) {
-                printf("AP Exception: {}\n", e);
+                printf("AP Exception: {}\n", e.what());
             }
             if (gifting_supported) {
                 // Order is important, Motherboxes must be retrieved before personal box for auto-rejection reasons, do not combine
