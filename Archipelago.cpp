@@ -770,6 +770,7 @@ bool parse_response(std::string msg, std::string &request) {
                     root[i]["players"][j]["team"].asInt(),
                     root[i]["players"][j]["slot"].asInt(),
                     root[i]["players"][j]["name"].asString(),
+                    root[i]["players"][j]["name"].asString(),
                     "PLACEHOLDER"
                 };
                 player.game = root[i]["slot_info"][std::to_string(player.slot)]["game"].asString();
