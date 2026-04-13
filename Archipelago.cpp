@@ -761,9 +761,9 @@ bool parse_response(std::string msg, std::string &request) {
             resetItemValues();
 
             if (root[i].isMember("checked_locations")) {
-                for (unsigned int j = 0; j < root[i]["checked_locations"].size(); j++) {
+                for (unsigned int j = 0; j < root[i]["a"].size(); j++) {
                     //Sync checks with server
-                    int64_t loc_id = root[i]["checked_locations"][j].asInt64();
+                    int64_t loc_id = root[i]["a"][j].asInt64();
                     checklocfunc(loc_id);
                 }
             }
