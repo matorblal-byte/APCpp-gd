@@ -759,29 +759,37 @@ bool parse_response(std::string msg, std::string &request) {
             ap_player_id = root[i]["slot"].asInt(); // MUST be called before resetitemvalues, otherwise PrivateServerDataPrefix, GetPlayerID return broken values!
             ap_player_team = root[i]["team"].asInt();
             resetItemValues();
-
-            if (root[i].isMember("checked_locations")) {
-                for (unsigned int j = 0; j < root[i]["a"].size(); j++) {
-                    //Sync checks with server
-                    int64_t loc_id = root[i]["a"][j].asInt64();
-                    checklocfunc(loc_id);
+            try {
+                if (root[i].isMember("checked_locations")) {
+                    for (unsigned int j = 0; j < root[i]["checked_locations"].size(); j++) {
+                        //Sync checks with server
+                        int64_t loc_id = root[i]["checked_locations"][j].asInt64();
+                        checklocfunc(loc_id);
+                    }
                 }
             }
-            if (root[i].isMember("players")) {
-                for (unsigned int j = 0; j < root[i]["players"].size(); j++) {
-                    AP_NetworkPlayer player = {
-                        root[i]["players"][j]["team"].asInt(),
-                        root[i]["players"][j]["slot"].asInt(),
-                        root[i]["players"][j]["name"].asString(),
-                        root[i]["players"][j]["alias"].asString(),
-                        "PLACEHOLDER"
-                    };
-                    player.game = root[i]["slot_info"][std::to_string(player.slot)]["game"].asString();
-                    map_players[root[i]["players"][j]["slot"].asInt()] = player;
-                    teams_set.insert(root[i]["players"][j]["team"].asInt());
+            catch (const std::exception& e) {
+                printf("AP Exception: {}\n", e);
+            }
+            try {
+                if (root[i].isMember("players")) {
+                    for (unsigned int j = 0; j < root[i]["players"].size(); j++) {
+                        AP_NetworkPlayer player = {
+                            root[i]["players"][j]["team"].asInt(),
+                            root[i]["players"][j]["slot"].asInt(),
+                            root[i]["players"][j]["name"].asString(),
+                            root[i]["players"][j]["alias"].asString(),
+                            "PLACEHOLDER"
+                        };
+                        player.game = root[i]["slot_info"][std::to_string(player.slot)]["game"].asString();
+                        map_players[root[i]["players"][j]["slot"].asInt()] = player;
+                        teams_set.insert(root[i]["players"][j]["team"].asInt());
+                    }
                 }
             }
-
+            catch (const std::exception& e) {
+                printf("AP Exception: {}\n", e);
+            }
             if (gifting_supported) {
                 // Order is important, Motherboxes must be retrieved before personal box for auto-rejection reasons, do not combine
                 std::map<std::string,AP_DataType> giftMotherBoxKeys;
